@@ -54,3 +54,34 @@ SELECT first_name, last_name, sex
 FROM employees e
 WHERE e.first_name = 'Hercules'
 AND e.last_name LIKE 'B%';
+
+--Step 6: list all employees in the Sales department with:
+--employee number, last name, first name and department name
+SELECT emp_num,
+(SELECT last_name
+	FROM employees e
+	WHERE e.emp_num = de.emp_num),
+(SELECT first_name
+	FROM employees e
+	WHERE e.emp_num = de.emp_num),
+(SELECT dept_name
+	FROM departments d
+	WHERE d.dept_num = de.dept_num)
+FROM dept_employee de
+WHERE dept_num = 'd007';
+
+--Step 7: list all employees in the Sales and Development department with:
+--employee number, last name, first name and department name
+SELECT emp_num,
+(SELECT last_name
+	FROM employees e
+	WHERE e.emp_num = de.emp_num),
+(SELECT first_name
+	FROM employees e
+	WHERE e.emp_num = de.emp_num),
+(SELECT dept_name
+	FROM departments d
+	WHERE d.dept_num = de.dept_num)
+FROM dept_employee de
+WHERE dept_num = 'd007'
+OR dept_num = 'd005';
