@@ -37,16 +37,17 @@ FROM dept_manager dm;
 
 --Step 4: list department of each employee with following info:
 --employee number, last name, first name and department name
-SELECT emp_num, last_name, first_name,
+SELECT emp_num,
+(SELECT last_name
+	FROM employees e
+	WHERE e.emp_num = de.emp_num),
+(SELECT first_name
+	FROM employees e
+	WHERE e.emp_num = de.emp_num),
 (SELECT dept_name
 	FROM departments d
-	WHERE dept_num IN
-	(
-		SELECT dept_num
-		FROM dept_employee de
-		WHERE de.emp_num = e.emp_num)
-)
-FROM employees e;
+	WHERE d.dept_num = de.dept_num)
+FROM dept_employee de;
 
 --Step 5: list first name, last name and sex for employees whose
 --first name is "Hercules" and last name starts with "B"
@@ -85,3 +86,9 @@ SELECT emp_num,
 FROM dept_employee de
 WHERE dept_num = 'd007'
 OR dept_num = 'd005';
+
+--Step 8: list frequency count of employee last names in descending order
+SELECT last_name, COUNT(last_name) AS "name count"
+FROM employees
+GROUP BY last_name
+ORDER BY "name count" DESC;
